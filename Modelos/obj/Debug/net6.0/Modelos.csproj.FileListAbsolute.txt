@@ -10,3 +10,5 @@ D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\Modelos.dll
 D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\refint\Modelos.dll
 D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\Modelos.pdb
 D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\ref\Modelos.dll
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\bin\Debug\net6.0\Modelos.runtimeconfig.json
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\Modelos.genruntimeconfig.cache
