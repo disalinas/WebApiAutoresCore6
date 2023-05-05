@@ -29,5 +29,43 @@ namespace WebApiAutores.Controllers
 
             return Ok();
         }
+
+        [HttpPut("{id:int}")] // api/autores/id  : sólo aceptamos valores numéricos.
+        public async Task<ActionResult> Put(int id, Autor autor)
+        {
+            if (id != autor.Id)
+            {
+                return BadRequest("El identificador del autor no coincide con el identificador de la URL.");
+            }
+
+            var existe = await context.Autores.AnyAsync(autor => autor.Id == id);
+
+            if (!existe)
+            {
+                return NotFound();
+            }
+
+            context.Update(autor);
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var existe = await context.Autores.AnyAsync(autor => autor.Id == id);
+
+            if (!existe)
+            {
+                return NotFound();
+            }
+
+            context.Remove(new Autor() { Id = id });
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
+
     }
 }
