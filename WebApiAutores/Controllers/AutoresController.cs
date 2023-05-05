@@ -6,7 +6,7 @@ namespace WebApiAutores.Controllers
 {
     [ApiController]
     [Route("api/autores")]
-    public class AutoresController : Controller
+    public class AutoresController : ControllerBase
     {
         private readonly ApplicationDbContext context;
 
@@ -18,7 +18,7 @@ namespace WebApiAutores.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Autor>>> Get()
         {
-            return await this.context.Autores.ToListAsync();
+            return await this.context.Autores.Include(autor => autor.Libros).ToListAsync();
         }
 
         [HttpPost]

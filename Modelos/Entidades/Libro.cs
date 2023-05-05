@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace Modelos.Entidades
 {
-    public class Autor
+    public class Libro
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string Nombre { get; set; }
-        public List<Libro> Libros { get; set; } 
+        public int AutorId { get; set; }
+        public Autor? Autor { get; set; }
+
     }
 }
