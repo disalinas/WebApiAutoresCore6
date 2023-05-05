@@ -1,0 +1,12 @@
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\bin\Debug\net6.0\Modelos.deps.json
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\bin\Debug\net6.0\Modelos.dll
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\bin\Debug\net6.0\Modelos.pdb
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\Modelos.csproj.AssemblyReference.cache
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\Modelos.GeneratedMSBuildEditorConfig.editorconfig
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\Modelos.AssemblyInfoInputs.cache
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\Modelos.AssemblyInfo.cs
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\Modelos.csproj.CoreCompileInputs.cache
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\Modelos.dll
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\refint\Modelos.dll
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\Modelos.pdb
+D:\David\Proyectos\Pruebas\WebApiAutores\Modelos\obj\Debug\net6.0\ref\Modelos.dll
