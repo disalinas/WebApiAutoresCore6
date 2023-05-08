@@ -42,9 +42,14 @@ namespace WebApiAutores
             // 'ServicioA'.
             //services.AddSingleton<IServicio, ServicioA>();
 
+            services.AddResponseCaching(); // Para poder utilizar caché en la aplicación.
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "WebAPIAutores", Version = "v1" });
+            });
         }
 
         /// <summary>
@@ -100,6 +105,7 @@ namespace WebApiAutores
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseResponseCaching(); // Para utilizar caché en la aplicación. Hace falta establecer el servicio más arriba.
             app.UseAuthorization();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }

@@ -113,5 +113,11 @@ namespace WebApiAutores.Controllers
             return Ok();
         }
 
+        [HttpGet("GUID")]
+        [ResponseCache(Duration = 10)] // Caché de 10 segundos.
+        public ActionResult ObtenerGUIDs()
+        {
+            return Ok(Guid.NewGuid());
+        }
     }
 }
