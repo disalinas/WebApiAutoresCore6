@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using WebApiAutores.Middlewares;
 using WebApiAutores.Servicios;
 
 namespace WebApiAutores
@@ -51,13 +52,50 @@ namespace WebApiAutores
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            // Capturar todas las respuestas que los controladores realicen a las llamadas.
+            //app.Use(async (contexto, siguiente) =>
+            //{
+            //    // Las respuestas de la petición están en un buffer, por lo que hace falta utilizar un memorystream para después colocarla en la respuésta (buffer).
+            //    using (var ms = new MemoryStream())
+            //    {
+            //        var cuerpoOriginalRespuesta = contexto.Response.Body;
+            //        contexto.Response.Body = ms;
+
+            //        await siguiente.Invoke(); // Continuamos con el pipeline (las llamadas encadenadas del pipeline).
+
+            //        // Leemos la respuesta, la guardamos en el string 'respuesta' y posicionamos en el inicio el cursor de lectura.
+            //        ms.Seek(0, SeekOrigin.Begin);
+            //        string respuesta = new StreamReader(ms).ReadToEnd();
+            //        ms.Seek(0, SeekOrigin.Begin);
+            //        // Copiamos el contenido de la respesta en la respuesta original.
+            //        await ms.CopyToAsync(cuerpoOriginalRespuesta);
+            //        contexto.Response.Body = cuerpoOriginalRespuesta;
+
+            //        logger.LogInformation(respuesta);
+            //    }
+            //});
+            // El código de arriba está dentro de 'LoguearRespuestaHTTPMiddleware'.
+            //app.UseMiddleware<LoguearRespuestaHTTPMiddleware>();
+            app.UseLoguearRespuestaHTTP(); // En vez de utilizar la línea de arriba, utilizo una extensión que hace eso mismo. Así no se expone la clase.
+
+            app.Map("/ruta1", app =>
+            { // Si se quiere acceder a /ruta1, entonces se ejecuta lo que hay aquí dentro y no se ejecutará lo que haya fuera de él.
+                app.Run(async contexto =>
+                {
+                    await contexto.Response.WriteAsync("Intercepción del pipeline.");
+                });
+            });
+            
+
             // Configure the HTTP request pipeline.
             if (env.IsDevelopment())
             {
+                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                //app.UseSwaggerUI();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIAutores v1"));
             }
 
             app.UseHttpsRedirection();
