@@ -32,7 +32,7 @@ namespace WebApiAutores.Controllers
         public async Task<ActionResult<Autor>> Get(int id)
         {
             var autor = await this.context.Autores.FirstOrDefaultAsync(autor => autor.Id == id);
-
+                
             if (null == autor)
             {
                 return NotFound();
