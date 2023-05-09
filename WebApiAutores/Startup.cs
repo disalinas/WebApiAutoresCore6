@@ -51,6 +51,7 @@ namespace WebApiAutores
             //services.AddSingleton<IServicio, ServicioA>();
 
             services.AddTransient<MiFiltroDeAccion>();
+            services.AddHostedService<EscribirEnArchivo>();
 
             services.AddResponseCaching(); // Para poder utilizar caché en la aplicación.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(); // Para poder utilizar autenticación.

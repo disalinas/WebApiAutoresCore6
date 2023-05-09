@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Modelos\Modelos.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

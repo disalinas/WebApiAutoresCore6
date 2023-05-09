@@ -1,0 +1,9 @@
+Proceso iniciado.
+Proceso finalizado.
+Proceso iniciado.
+Proceso en ejecución: 09/05/2023 09:51:18
+Proceso en ejecución: 09/05/2023 09:51:28
+Proceso en ejecución: 09/05/2023 09:51:33
+Proceso en ejecución: 09/05/2023 09:51:38
+Proceso en ejecución: 09/05/2023 09:51:48
+Proceso finalizado.
