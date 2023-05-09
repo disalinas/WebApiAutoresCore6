@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using WebApiAutores.Filtros;
 using WebApiAutores.Middlewares;
 using WebApiAutores.Servicios;
 
@@ -21,14 +23,20 @@ namespace WebApiAutores
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // Para evitar ciclos en EF al recuperar datos, cambio la siguiente instrucción por la de la línea que hay a continuación,
-            // estableciendo una configuración JSON.
+            
             //services.AddControllers();
-            services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+            services
+                // Registramos el filtro de manera global.
+                .AddControllers(opciones => opciones.Filters.Add(typeof(FiltroDeExcepcion))) 
+                // Para evitar ciclos en EF al recuperar datos, cambio la instrucción inicial por la de la línea que hay a continuación,
+                // estableciendo una configuración JSON.
+                .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+            
             // Con la siguiente línea se consigue establecer la inyección de dependencia de 'ApplicationDbContext' en aquellos objetos 
             // que tengan declarado como parámetro en su constructor dicho tipo.
             // El servicio se configura como 'scoped'.
             services.AddDbContext<Modelos.Entidades.ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
+            
             // Crear servicio transitorio. Al sistema de inyección de dependencias se le está diciendo que cuando una clase requiera de un objeto de tipo
             // 'IServicio', tiene que pasarle una nueva instancia del tipo 'ServicioA'. En el caso de 'ServicioA' tiene depedencia de 'ILogger', pero el sistema
             // de inyección de dependencias ya se encarga de ella. Como el servicio 'ILogger' ya viene configurado por defecto, el sistema de inyección de
@@ -42,7 +50,10 @@ namespace WebApiAutores
             // 'ServicioA'.
             //services.AddSingleton<IServicio, ServicioA>();
 
+            services.AddTransient<MiFiltroDeAccion>();
+
             services.AddResponseCaching(); // Para poder utilizar caché en la aplicación.
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(); // Para poder utilizar autenticación.
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
@@ -106,7 +117,7 @@ namespace WebApiAutores
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseResponseCaching(); // Para utilizar caché en la aplicación. Hace falta establecer el servicio más arriba.
-            app.UseAuthorization();
+            app.UseAuthorization(); // Para utilizar autenticación.
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }

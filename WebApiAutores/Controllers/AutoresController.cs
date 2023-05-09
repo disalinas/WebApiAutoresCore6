@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Modelos.Entidades;
+using WebApiAutores.Filtros;
 using WebApiAutores.Servicios;
 
 namespace WebApiAutores.Controllers
@@ -21,6 +23,8 @@ namespace WebApiAutores.Controllers
         [HttpGet]               // api/autores
         [HttpGet("listado")]    // api/autores/listado
         [HttpGet("/listado")]   // listado
+        //[Authorize] // El filtro 'Authorize' puede utilizarse a nivel de endpoint o de controlador.
+        [ServiceFilter(typeof(MiFiltroDeAccion))]
         public async Task<ActionResult<List<Autor>>> Get()
         {
             return await this.context.Autores.Include(autor => autor.Libros).ToListAsync();
@@ -115,6 +119,7 @@ namespace WebApiAutores.Controllers
 
         [HttpGet("GUID")]
         [ResponseCache(Duration = 10)] // Caché de 10 segundos.
+        [ServiceFilter(typeof(MiFiltroDeAccion))]
         public ActionResult ObtenerGUIDs()
         {
             return Ok(Guid.NewGuid());
