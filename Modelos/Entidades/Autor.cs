@@ -9,7 +9,7 @@ using Modelos.Validaciones;
 
 namespace Modelos.Entidades
 {
-    public class Autor : IValidatableObject
+    public class Autor
     {
         public int Id { get; set; }
         
@@ -18,35 +18,5 @@ namespace Modelos.Entidades
         [PrimeraLetraMayuscula]
         public string Nombre { get; set; }
         
-        //[Range(18, 99)]
-        //[NotMapped] // Propiedad Edad que no tiene vinculación con la tabla Autores.
-        //public int Edad { get; set; }
-        
-        //[CreditCard] // Valida que sea un número de tarjeta de crédito/débito.
-        //[NotMapped] // Propiedad Edad que no tiene vinculación con la tabla Autores.
-        //public string TarjetaCredito { get; set; }
-        
-        //[Url]
-        //[NotMapped] // Propiedad Edad que no tiene vinculación con la tabla Autores.
-        //public string url { get; set; }
-        
-        public List<Libro> Libros { get; set; }
-
-        // Regla de validación del propio modelo. Para que se ejecute esta validación, primero se tienen que pasar todas las reglas
-        // de validación a nivel de atributo que hay en las propiedades.
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (!string.IsNullOrEmpty(this.Nombre))
-            {
-                var primeraLetra = this.Nombre[0].ToString();
-
-                if (primeraLetra.ToUpper() != primeraLetra)
-                {
-                    // Yield permite ir añadiendo datos al IEnumerable que devuelve el método 'Validate'.
-                    // Así se irían añadiendo los errores con otras validaciones.
-                    yield return new ValidationResult("La primera letra debe ser mayúscula.", new string[] {nameof(this.Nombre)});
-                }
-            }
-        }
     }
 }

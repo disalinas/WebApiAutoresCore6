@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using WebApiAutores.Filtros;
 using WebApiAutores.Middlewares;
-using WebApiAutores.Servicios;
 
 namespace WebApiAutores
 {
@@ -41,7 +40,7 @@ namespace WebApiAutores
             // 'IServicio', tiene que pasarle una nueva instancia del tipo 'ServicioA'. En el caso de 'ServicioA' tiene depedencia de 'ILogger', pero el sistema
             // de inyección de dependencias ya se encarga de ella. Como el servicio 'ILogger' ya viene configurado por defecto, el sistema de inyección de
             // dependencias puede resolverlo de manera automática.
-            services.AddTransient<IServicio, ServicioA>();
+            //services.AddTransient<IServicio, ServicioA>();
 
             // Dentro del mismo contexto http, obtendremos el mismo objeto 'ServicioA'. Pero para distintas peticiones http obtendremos distintos objetos.
             //services.AddScoped<IServicio, ServicioA>();
@@ -51,9 +50,9 @@ namespace WebApiAutores
             //services.AddSingleton<IServicio, ServicioA>();
 
             services.AddTransient<MiFiltroDeAccion>();
-            services.AddHostedService<EscribirEnArchivo>();
+            //services.AddHostedService<EscribirEnArchivo>();
 
-            services.AddResponseCaching(); // Para poder utilizar caché en la aplicación.
+            //services.AddResponseCaching(); // Para poder utilizar caché en la aplicación.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(); // Para poder utilizar autenticación.
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -97,13 +96,13 @@ namespace WebApiAutores
             //app.UseMiddleware<LoguearRespuestaHTTPMiddleware>();
             app.UseLoguearRespuestaHTTP(); // En vez de utilizar la línea de arriba, utilizo una extensión que hace eso mismo. Así no se expone la clase.
 
-            app.Map("/ruta1", app =>
-            { // Si se quiere acceder a /ruta1, entonces se ejecuta lo que hay aquí dentro y no se ejecutará lo que haya fuera de él.
-                app.Run(async contexto =>
-                {
-                    await contexto.Response.WriteAsync("Intercepción del pipeline.");
-                });
-            });
+            //app.Map("/ruta1", app =>
+            //{ // Si se quiere acceder a /ruta1, entonces se ejecuta lo que hay aquí dentro y no se ejecutará lo que haya fuera de él.
+            //    app.Run(async contexto =>
+            //    {
+            //        await contexto.Response.WriteAsync("Intercepción del pipeline.");
+            //    });
+            //});
             
 
             // Configure the HTTP request pipeline.
@@ -117,7 +116,7 @@ namespace WebApiAutores
 
             app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseResponseCaching(); // Para utilizar caché en la aplicación. Hace falta establecer el servicio más arriba.
+            //app.UseResponseCaching(); // Para utilizar caché en la aplicación. Hace falta establecer el servicio más arriba.
             app.UseAuthorization(); // Para utilizar autenticación.
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }

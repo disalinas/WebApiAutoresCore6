@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Servicios\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

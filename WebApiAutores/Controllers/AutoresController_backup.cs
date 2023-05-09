@@ -8,23 +8,28 @@ namespace WebApiAutores.Controllers
 {
     [ApiController]
     [Route("api/autores")]
-    public class AutoresController : ControllerBase
+    public class AutoresControllerBackup : ControllerBase
     {
         private readonly ApplicationDbContext context;
 
-        public AutoresController(ApplicationDbContext context) 
+        public AutoresControllerBackup(ApplicationDbContext context) 
         {
             this.context = context;
         }
 
-        [HttpGet]               // api/autores        
-        public async Task<ActionResult<List<Autor>>> Get()
-        {
-            //return await this.context.Autores.Include(autor => autor.Libros).ToListAsync();
-            return await this.context.Autores.ToListAsync();
-        }
+        //[HttpGet]               // api/autores
+        //[HttpGet("listado")]    // api/autores/listado
+        //[HttpGet("/listado")]   // listado
+        ////[Authorize] // El filtro 'Authorize' puede utilizarse a nivel de endpoint o de controlador.
+        //[ServiceFilter(typeof(MiFiltroDeAccion))]
+        //public async Task<ActionResult<List<Autor>>> Get()
+        //{
+        //    return await this.context.Autores.Include(autor => autor.Libros).ToListAsync();
+        //}
 
         [HttpGet("{id:int}")]   // api/autores/{id}
+        //[HttpGet("{id:int}/{param2?}")]   // api/autores/{id}/{param2}  donde {param2} es opcional (?).
+        //[HttpGet("{id:int}/{param2=persona}")]   // api/autores/{id}/{param2}  donde {param2} tiene valor por defecto, persona, si no se especifica.
         public async Task<ActionResult<Autor>> Get(int id)
         {
             var autor = await this.context.Autores.FirstOrDefaultAsync(autor => autor.Id == id);
@@ -50,6 +55,11 @@ namespace WebApiAutores.Controllers
             return autor;
         }
 
+        [HttpGet("primero")]    // api/autores/primero
+        public async Task<ActionResult<Autor>> PrimerAutor()
+        {
+            return await this.context.Autores.FirstOrDefaultAsync();
+        }
 
         [HttpPost]
         public async Task<ActionResult> Post(Autor autor)
@@ -102,6 +112,14 @@ namespace WebApiAutores.Controllers
             await context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        [HttpGet("GUID")]
+        [ResponseCache(Duration = 10)] // Caché de 10 segundos.
+        [ServiceFilter(typeof(MiFiltroDeAccion))]
+        public ActionResult ObtenerGUIDs()
+        {
+            return Ok(Guid.NewGuid());
         }
     }
 }
