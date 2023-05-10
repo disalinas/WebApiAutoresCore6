@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Modelos.Comun;
 using Modelos.Entidades;
 using WebApiAutores.Filtros;
 
@@ -11,10 +13,12 @@ namespace WebApiAutores.Controllers
     public class AutoresController : ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private readonly IMapper automapper;
 
-        public AutoresController(ApplicationDbContext context) 
+        public AutoresController(ApplicationDbContext context, IMapper automapper) 
         {
             this.context = context;
+            this.automapper = automapper;
         }
 
         [HttpGet]               // api/autores        
@@ -52,17 +56,18 @@ namespace WebApiAutores.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> Post(Autor autor)
+        public async Task<ActionResult> Post(AutorCreacion autorCreacion)
         {
-            var existeAutor = await this.context.Autores.AnyAsync(autor => autor.Nombre == autor.Nombre);
+            var existeAutor = await this.context.Autores.AnyAsync(item => item.Nombre == autorCreacion.Nombre);
 
             if (existeAutor)
             {
-                return BadRequest(string.Format("Ya existe un autor con el mismo nombre '{0}'.", autor.Nombre));
+                return BadRequest(string.Format("Ya existe un autor con el mismo nombre '{0}'.", autorCreacion.Nombre));
             }
 
-            this.context.Add(autor);
-            await context.SaveChangesAsync();
+            var autor = this.automapper.Map<Autor>(autorCreacion);
+            this.context.Autores.Add(autor);
+            await this.context.SaveChangesAsync();
 
             return Ok();
         }

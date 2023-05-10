@@ -7,7 +7,7 @@ using WebApiAutores.Filtros;
 namespace WebApiAutores.Controllers
 {
     [ApiController]
-    [Route("api/autores")]
+    [Route("api/autoresbackup")]
     public class AutoresControllerBackup : ControllerBase
     {
         private readonly ApplicationDbContext context;

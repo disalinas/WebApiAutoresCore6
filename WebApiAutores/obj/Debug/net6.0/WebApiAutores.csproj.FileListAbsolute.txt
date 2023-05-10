@@ -89,3 +89,5 @@ D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\obj\Debug\net6.0\WebApiAu
 D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\obj\Debug\net6.0\ref\WebApiAutores.dll
 D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\WebApiAutores.staticwebassets.runtime.json
+D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\AutoMapper.dll
+D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
