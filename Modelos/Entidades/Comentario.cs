@@ -10,7 +10,7 @@ namespace Modelos.Entidades
     {
         public int Id { get; set; }
         public string contenido { get; set; }
-        public string IdLibro { get; set; }
+        public int IdLibro { get; set; }
         public Libro Libro { get; set; }
     }
 }
