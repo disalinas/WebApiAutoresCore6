@@ -29,7 +29,7 @@ namespace WebApiAutores.Controllers
                 return NotFound();
             }
 
-            var comentariosEntity = await this.context.Comentarios.Where(item => item.IdLibro == IdLibro).ToListAsync();
+            var comentariosEntity = await this.context.Comentarios.Where(item => item.LibroId == IdLibro).ToListAsync();
             var comentariosDTO = this.automapper.Map<List<ComentarioDTO>>(comentariosEntity);
 
             return comentariosDTO;

@@ -17,6 +17,6 @@ namespace Modelos.Entidades
         [StringLength(maximumLength:50, ErrorMessage = "El campo {0} no puede tener una longitud superior de {1} caracteres.")]
         [PrimeraLetraMayuscula]
         public string Nombre { get; set; }
-        
+        public List<AutorLibro> AutoresLibros { get; set; }
     }
 }

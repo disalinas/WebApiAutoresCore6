@@ -11,8 +11,8 @@ using Modelos.Entidades;
 namespace Modelos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230512105513_Comentarios_correccion_id")]
-    partial class Comentarios_correccion_id
+    [Migration("20230512123449_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,24 @@ namespace Modelos.Migrations
                     b.ToTable("Autores");
                 });
 
+            modelBuilder.Entity("Modelos.Entidades.AutorLibro", b =>
+                {
+                    b.Property<int>("AutorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LibroId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("int");
+
+                    b.HasKey("AutorId", "LibroId");
+
+                    b.HasIndex("LibroId");
+
+                    b.ToTable("AutoresLibros");
+                });
+
             modelBuilder.Entity("Modelos.Entidades.Comentario", b =>
                 {
                     b.Property<int>("Id")
@@ -49,9 +67,6 @@ namespace Modelos.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("IdLibro")
-                        .HasColumnType("int");
 
                     b.Property<int>("LibroId")
                         .HasColumnType("int");
@@ -75,9 +90,6 @@ namespace Modelos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AutorId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -85,9 +97,26 @@ namespace Modelos.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AutorId");
-
                     b.ToTable("Libros");
+                });
+
+            modelBuilder.Entity("Modelos.Entidades.AutorLibro", b =>
+                {
+                    b.HasOne("Modelos.Entidades.Autor", "Autor")
+                        .WithMany("AutoresLibros")
+                        .HasForeignKey("AutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modelos.Entidades.Libro", "Libro")
+                        .WithMany("AutoresLibros")
+                        .HasForeignKey("LibroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Autor");
+
+                    b.Navigation("Libro");
                 });
 
             modelBuilder.Entity("Modelos.Entidades.Comentario", b =>
@@ -101,19 +130,15 @@ namespace Modelos.Migrations
                     b.Navigation("Libro");
                 });
 
-            modelBuilder.Entity("Modelos.Entidades.Libro", b =>
+            modelBuilder.Entity("Modelos.Entidades.Autor", b =>
                 {
-                    b.HasOne("Modelos.Entidades.Autor", "Autor")
-                        .WithMany()
-                        .HasForeignKey("AutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Autor");
+                    b.Navigation("AutoresLibros");
                 });
 
             modelBuilder.Entity("Modelos.Entidades.Libro", b =>
                 {
+                    b.Navigation("AutoresLibros");
+
                     b.Navigation("Comentarios");
                 });
 #pragma warning restore 612, 618
