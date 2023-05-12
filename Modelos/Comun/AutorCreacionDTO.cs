@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Modelos.Comun
 {
-    public class AutorCreacion
+    public class AutorCreacionDTO
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [StringLength(maximumLength: 50, ErrorMessage = "El campo {0} no puede tener una longitud superior de {1} caracteres.")]

@@ -22,41 +22,41 @@ namespace WebApiAutores.Controllers
         }
 
         [HttpGet]               // api/autores        
-        public async Task<ActionResult<List<Autor>>> Get()
+        public async Task<ActionResult<List<AutorDTO>>> Get()
         {
-            //return await this.context.Autores.Include(autor => autor.Libros).ToListAsync();
-            return await this.context.Autores.ToListAsync();
+            var autoresEntity = await this.context.Autores.ToListAsync();
+            var autores = this.automapper.Map<List<AutorDTO>>(autoresEntity);
+            
+            return autores;
         }
 
         [HttpGet("{id:int}")]   // api/autores/{id}
-        public async Task<ActionResult<Autor>> Get(int id)
+        public async Task<ActionResult<AutorDTO>> Get(int id)
         {
-            var autor = await this.context.Autores.FirstOrDefaultAsync(autor => autor.Id == id);
+            var autorEntity = await this.context.Autores.Where(autor => autor.Id == id).ToListAsync();
                 
-            if (null == autor)
+            if (null == autorEntity)
             {
                 return NotFound();
             }
+
+            var autor = this.automapper.Map<AutorDTO>(autorEntity);
 
             return autor;
         }
 
         [HttpGet("{nombre}")]   // api/autores/{id}
-        public async Task<ActionResult<Autor>> Get(string nombre)
+        public async Task<ActionResult<List<AutorDTO>>> Get(string nombre)
         {
-            var autor = await this.context.Autores.FirstOrDefaultAsync(autor => autor.Nombre.Contains(nombre));
+            var autoresEntity = await this.context.Autores.Where(autor => autor.Nombre.Contains(nombre)).ToListAsync();
+            var autores = this.automapper.Map<List<AutorDTO>>(autoresEntity);
 
-            if (null == autor)
-            {
-                return NotFound();
-            }
-
-            return autor;
+            return autores;
         }
 
 
         [HttpPost]
-        public async Task<ActionResult> Post(AutorCreacion autorCreacion)
+        public async Task<ActionResult> Post(AutorCreacionDTO autorCreacion)
         {
             var existeAutor = await this.context.Autores.AnyAsync(item => item.Nombre == autorCreacion.Nombre);
 

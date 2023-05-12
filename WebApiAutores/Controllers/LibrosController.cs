@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Modelos.Comun;
 using Modelos.Entidades;
 
 namespace WebApiAutores.Controllers
@@ -9,29 +11,34 @@ namespace WebApiAutores.Controllers
     public class LibrosController : ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private readonly IMapper automapper;
 
-        public LibrosController(ApplicationDbContext context)
+        public LibrosController(ApplicationDbContext context, IMapper automapper)
         {
             this.context = context;
+            this.automapper = automapper;
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Libro>> Get(int id)
+        public async Task<ActionResult<LibroDTO>> Get(int id)
         {
-            return await this.context.Libros.Include(libro => libro.Autor).FirstOrDefaultAsync(libro => libro.Id == id);
+            var libroEntity = await this.context.Libros.FirstOrDefaultAsync(libro => libro.Id == id);
+            var libroDTO = this.automapper.Map<LibroDTO>(libroEntity);
+
+            return libroDTO;
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Libro libro)
+        public async Task<ActionResult> Post(LibroCreacionDTO libro)
         {
-            var existeAutor = await this.context.Autores.AnyAsync(autor => autor.Id == libro.AutorId);
+            //var existeAutor = await this.context.Autores.AnyAsync(autor => autor.Id == libro.AutorId);
 
-            if (!existeAutor)
-            {
-                return BadRequest("No existe el autor indicado.");
-            }
-
-            this.context.Add(libro);
+            //if (!existeAutor)
+            //{
+            //    return BadRequest("No existe el autor indicado.");
+            //}
+            var libroEntity = this.automapper.Map<Libro>(libro);
+            this.context.Add(libroEntity);
             await this.context.SaveChangesAsync();
 
             return Ok();

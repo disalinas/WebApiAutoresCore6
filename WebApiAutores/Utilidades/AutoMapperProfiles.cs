@@ -9,7 +9,10 @@ namespace WebApiAutores.Utilidades
         public AutoMapperProfiles() 
         {
             // Configurar el mapeo automático del modelo DTO AutorCreacion a la entity Autor.
-            CreateMap<AutorCreacion, Autor>();
+            CreateMap<AutorCreacionDTO, Autor>();
+            CreateMap<Autor, AutorDTO>();
+            CreateMap<LibroCreacionDTO, Libro>();
+            CreateMap<Libro, LibroDTO>();
         }
     }
 }
