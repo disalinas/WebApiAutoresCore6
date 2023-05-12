@@ -22,7 +22,7 @@ namespace WebApiAutores.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<LibroDTO>> Get(int id)
         {
-            var libroEntity = await this.context.Libros.FirstOrDefaultAsync(libro => libro.Id == id);
+            var libroEntity = await this.context.Libros.Include(item => item.Comentarios).FirstOrDefaultAsync(libro => libro.Id == id);
             var libroDTO = this.automapper.Map<LibroDTO>(libroEntity);
 
             return libroDTO;
