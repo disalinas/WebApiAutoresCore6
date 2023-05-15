@@ -20,10 +20,14 @@ namespace WebApiAutores.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<LibroDTO>> Get(int id)
+        public async Task<ActionResult<LibroDTOConAutores>> Get(int id)
         {
-            var libroEntity = await this.context.Libros.Include(item => item.Comentarios).FirstOrDefaultAsync(libro => libro.Id == id);
-            var libroDTO = this.automapper.Map<LibroDTO>(libroEntity);
+            var libroEntity = await this.context.Libros
+                .Include(item => item.AutoresLibros)
+                .ThenInclude(item => item.Autor)
+                .Include(item => item.Comentarios)
+                .FirstOrDefaultAsync(libro => libro.Id == id);
+            var libroDTO = this.automapper.Map<LibroDTOConAutores>(libroEntity);
 
             return libroDTO;
         }
@@ -31,12 +35,22 @@ namespace WebApiAutores.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(LibroCreacionDTO libro)
         {
-            //var existeAutor = await this.context.Autores.AnyAsync(autor => autor.Id == libro.AutorId);
+            if (null == libro.AutoresIds)
+            {
+                return BadRequest("No se puede crear un libro sin especificar el autor.");
+            }
 
-            //if (!existeAutor)
-            //{
-            //    return BadRequest("No existe el autor indicado.");
-            //}
+            var autoresIds = await this.context.Autores
+                .Where(autor => libro.AutoresIds
+                .Contains(autor.Id))
+                .Select(autor => autor.Id)
+                .ToListAsync();
+
+            if (autoresIds.Count() != libro.AutoresIds.Count())
+            {
+                return BadRequest("No existe alguno de los autores indicados.");
+            }
+
             var libroEntity = this.automapper.Map<Libro>(libro);
             this.context.Add(libroEntity);
             await this.context.SaveChangesAsync();
