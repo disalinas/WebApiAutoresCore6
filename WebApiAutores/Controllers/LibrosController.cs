@@ -27,6 +27,7 @@ namespace WebApiAutores.Controllers
                 .ThenInclude(item => item.Autor)
                 .Include(item => item.Comentarios)
                 .FirstOrDefaultAsync(libro => libro.Id == id);
+            libroEntity.AutoresLibros = libroEntity.AutoresLibros.OrderBy(item => item.Orden).ToList();
             var libroDTO = this.automapper.Map<LibroDTOConAutores>(libroEntity);
 
             return libroDTO;
@@ -52,6 +53,7 @@ namespace WebApiAutores.Controllers
             }
 
             var libroEntity = this.automapper.Map<Libro>(libro);
+            this.AsignarOrdenAutores(libroEntity);
             this.context.Add(libroEntity);
             await this.context.SaveChangesAsync();
 
@@ -59,6 +61,36 @@ namespace WebApiAutores.Controllers
 
             //return Ok();
             return CreatedAtRoute("ObtenerLibro", new {id = libroEntity.Id }, libroDTO);
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(int id, LibroCreacionDTO libro)
+        {
+            var libroDB = await this.context.Libros
+                .Include(item => item.AutoresLibros)
+                .FirstOrDefaultAsync(item => item.Id == id);
+
+            if (null == libroDB)
+            {
+                return NotFound();
+            }
+
+            libroDB = this.automapper.Map(libro, libroDB);
+            this.AsignarOrdenAutores(libroDB);
+            await this.context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private void AsignarOrdenAutores(Libro libro)
+        {
+            if (null != libro.AutoresLibros)
+            {
+                for (int i = 0; i < libro.AutoresLibros.Count; i++)
+                {
+                    libro.AutoresLibros[i].Orden = i;
+                }
+            }
         }
     }
 }
