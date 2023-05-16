@@ -29,7 +29,8 @@ namespace WebApiAutores
                 .AddControllers(opciones => opciones.Filters.Add(typeof(FiltroDeExcepcion))) 
                 // Para evitar ciclos en EF al recuperar datos, cambio la instrucción inicial por la de la línea que hay a continuación,
                 // estableciendo una configuración JSON.
-                .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+                .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
+                .AddNewtonsoftJson(); // Configurar NewtonSoft.
             
             // Con la siguiente línea se consigue establecer la inyección de dependencia de 'ApplicationDbContext' en aquellos objetos 
             // que tengan declarado como parámetro en su constructor dicho tipo.

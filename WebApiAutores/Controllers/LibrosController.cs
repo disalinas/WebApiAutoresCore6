@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Azure;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Modelos.Comun;
@@ -92,5 +94,37 @@ namespace WebApiAutores.Controllers
                 }
             }
         }
+
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult> Patch(int id, JsonPatchDocument<LibroPatchDTO> patchDocument)
+        {
+            if (null == patchDocument)
+            {
+                return BadRequest();
+            }
+
+            var libroEntity = await this.context.Libros.FirstOrDefaultAsync(item => item.Id == id);
+
+            if (null == libroEntity)
+            {
+                return NotFound();
+            }
+
+            var libroDTO = this.automapper.Map<LibroPatchDTO>(libroEntity);
+            patchDocument.ApplyTo(libroDTO, ModelState); // Aplicar las actualizaciones indicadas en 'patchDocument' en el objeto 'libroDTO'.
+            var esValido = TryValidateModel(libroDTO); // Comprobar que las reglas de validación se estén cumpliento.
+
+            if (!esValido)
+            {
+                return BadRequest(ModelState); // Se devuelven los errores de validación encontrados.
+            }
+
+            this.automapper.Map(libroDTO, libroEntity);
+            await this.context.SaveChangesAsync();
+
+            return NoContent();
+
+        }
+
     }
 }

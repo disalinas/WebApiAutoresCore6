@@ -1,5 +1,4 @@
-﻿using Modelos.Entidades;
-using Modelos.Validaciones;
+﻿using Modelos.Validaciones;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Modelos.Comun
 {
-    public class LibroDTO
+    public class LibroPatchDTO
     {
-        public int Id { get; set; }
+        [PrimeraLetraMayuscula]
+        [StringLength(maximumLength: 250)]
+        [Required]
         public string Titulo { get; set; }
         public DateTime FechaPublicacion { get; set; }
-        public List<ComentarioDTO> Comentarios { get; set; } = new List<ComentarioDTO>();
     }
 }

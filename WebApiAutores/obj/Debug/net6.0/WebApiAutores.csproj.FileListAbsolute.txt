@@ -91,3 +91,7 @@ D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\Microsof
 D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\WebApiAutores.staticwebassets.runtime.json
 D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\AutoMapper.dll
 D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\David\Proyectos\Pruebas\WebApiAutores\WebApiAutores\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
