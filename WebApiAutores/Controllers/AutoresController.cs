@@ -72,7 +72,10 @@ namespace WebApiAutores.Controllers
             this.context.Autores.Add(autor);
             await this.context.SaveChangesAsync();
 
-            return Ok();
+            var autorDTO = this.automapper.Map<AutorDTO>(autor);
+
+            return CreatedAtRoute(new { id = autor.Id }, autorDTO);
+            //return Ok();
         }
 
         [HttpPut("{id:int}")] // api/autores/id  : sólo aceptamos valores numéricos.
