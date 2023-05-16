@@ -79,12 +79,12 @@ namespace WebApiAutores.Controllers
         }
 
         [HttpPut("{id:int}")] // api/autores/id  : sólo aceptamos valores numéricos.
-        public async Task<ActionResult> Put(int id, Autor autor)
+        public async Task<ActionResult> Put(int id, AutorCreacionDTO autor)
         {
-            if (id != autor.Id)
-            {
-                return BadRequest("El identificador del autor no coincide con el identificador de la URL.");
-            }
+            //if (id != autor.Id)
+            //{
+            //    return BadRequest("El identificador del autor no coincide con el identificador de la URL.");
+            //}
 
             var existe = await context.Autores.AnyAsync(autor => autor.Id == id);
 
@@ -93,10 +93,13 @@ namespace WebApiAutores.Controllers
                 return NotFound();
             }
 
+            var autorEntity = this.automapper.Map<Autor>(autor);
+            autorEntity.Id = id;
             context.Update(autor);
             await context.SaveChangesAsync();
 
-            return Ok();
+            //return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id:int}")]

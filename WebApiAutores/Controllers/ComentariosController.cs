@@ -62,7 +62,7 @@ namespace WebApiAutores.Controllers
                 if (!existeLibro)
                 {
                     return NotFound();
-                }
+                } 
 
                 var comentarioEntity = this.automapper.Map<Comentario>(comentario);
                 comentarioEntity.LibroId = libroId;
@@ -81,6 +81,29 @@ namespace WebApiAutores.Controllers
             }
         }
 
-        
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(int libroId, int id, ComentarioCreacionDTO comentario)
+        {
+            var existeLibro = await this.context.Libros.AnyAsync(libro => libro.Id == libroId);
+
+            if (!existeLibro)
+            {
+                return NotFound();
+            }
+
+            var existecomentario = await this.context.Comentarios.AnyAsync(item => item.Id == id);
+
+            if (!existecomentario)
+            {
+                return NotFound();
+            }
+
+            var comentarioEntity = this.automapper.Map<Comentario>(comentario);
+            comentarioEntity.Id = id;
+            this.context.Update(comentarioEntity);
+            await this.context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
